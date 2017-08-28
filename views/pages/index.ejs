@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+<body>
+<div class="container-fluid board">
+    <div id="buttonGre" class="pads"><audio id="soundbuttonGre" src="https://s3.amazonaws.com/freecodecamp/simonSound1.mp3"></audio></div>
+    <div id="buttonRed" class="pads"><audio id="soundbuttonRed" src="https://s3.amazonaws.com/freecodecamp/simonSound2.mp3"></audio></div>
+    <div id="buttonYel" class="pads"><audio id="soundbuttonYel" src="https://s3.amazonaws.com/freecodecamp/simonSound3.mp3"></audio></div>
+    <div id="buttonBlu" class="pads"><audio id="soundbuttonBlu" src="https://s3.amazonaws.com/freecodecamp/simonSound4.mp3"></audio></div>
+    <div id="center">
+      <div id="textTitle">Simon</div>
+      <div id="countBox">
+        <div id="countDisplay">
+          <div id="displayText">0</div>
+        </div>
+        <div id="countText">Steps</div>
+      </div>
+      <div id="startBox">
+        <div id="startButton"></div>
+        <div id="startText">Start</div>
+      </div>
+      <div id="strictBox">
+        <div id="strictButton"></div>
+        <div id="strictText">Strict</div>
+      </div>
+      <div id="instr">To reset, tap start twice.</div>
+    </div>
+</div>
+ <footer>
+   <% include ../partials/footer.ejs %>
+   <script>
+   //intial variables
+   var strict = "off";
+   var ready = false;
+   var speed;
+   var compStorage = [];
+   var compCount = 0;
+   var playerStorage = [];
+   var playerCount = 0;
+   var level = 1;
+   var newColor;
+   var turns;
+   var numOfMatches = true;
+
+   //clicking the strict button
+   $("#strictButton").on("click", function() {
+     if (strict == "off" && ready===false) {
+       $("#strictButton").css("background", "green");
+       strict = "on";
+     } else if (strict == "on" && ready===false) {
+       $("#strictButton").css("background", "yellow");
+       strict = "off";
+     }
+   });
+
+   //clicking the start button
+   $("#startButton").on("click", function() {
+     if (ready === false) {
+       $("#startButton").css("background", "green");
+       ready = true;
+       playerStorage = [];
+       compStorage = [];
+       compCount = 0;
+       playerCount = 0;
+       level = 1;
+       $("#displayText").html("0");
+       numOfMatches = true;
+       clearInterval(turns);
+       $(".pads").css("pointer-events", "none");
+       compReset();
+       setTimeout(function() {
+         turns = setInterval(playerSteps, 1000);
+       }, 1000);
+     }else if (ready===true){
+         $("#startButton").css("background", "red");
+         $("#displayText").html("0");
+         ready = false;
+     }
+   });
+
+   //clicking colored buttons
+   $("div[id*='button']").on("click", function() {
+     if (ready===true) {
+       if (event.which == 1) {
+         $("#sound" + this.id).get(0).cloneNode().play();
+         playerStorage.push(this.id.slice(6, 9));
+         playerCount++;
+        for (i = 0; i < playerStorage.length; i++) {
+           if (compStorage[i] != playerStorage[i]) {
+             numOfMatches = false;
+           }
+         }
+         if (!numOfMatches) {
+           $("#displayText").html("!!");
+           $("#soundbuttonWrong").get(0).play();
+           playerStorage = [];
+           compCount = 0;
+           playerCount = 0;
+           numOfMatches = true;
+           $(".pads").css("pointer-events", "none");
+           if (strict == "on") {
+             compStorage = [];
+             level = 1;
+             compReset();
+             setTimeout(function() {
+             turns = setInterval(playerSteps, speed);
+             }, 1000);
+           } else {
+             setTimeout(function() {
+             turns = setInterval(playerSteps, speed);
+             }, 1000);
+           }
+         } else {
+           if (playerCount == compCount) {
+             if (numOfMatches) {
+               if (level == 20) {
+                 win();
+               } else {
+                 playerStorage = [];
+                 compCount = 0;
+                 playerCount = 0;
+                 compReset();
+                 level++;
+
+                 switch (level) {
+                   case 1:
+                   case 2:
+                   case 3:
+                   case 4:
+                     speed = 1000;
+                     break;
+                   case 5:
+                     speed = 700;
+                     break;
+                   case 9:
+                     speed = 500;
+                     break;
+                   case 13:
+                     speed = 300;
+                     break;
+                 }
+                 setTimeout(function() {
+                   turns = setInterval(playerSteps, speed);
+                 }, 1000);
+                 $(".pads").css("pointer-events", "none");
+               }
+             }
+           }
+         }
+       }
+     }
+   });
+   //computer randomizer at each level
+   function compReset() {
+     var color = Math.floor((Math.random() * 4) + 1);
+     switch (color) {
+       case 1:
+         compStorage.push("Gre");
+         break;
+       case 2:
+         compStorage.push("Red");
+         break;
+       case 3:
+         compStorage.push("Yel");
+         break;
+       case 4:
+         compStorage.push("Blu");
+         break;
+     }
+   }
+   //counts player moves and sounds
+   function playerSteps() {
+     $("#displayText").html(level);
+     newColor = compStorage[compCount];
+     $("#soundbutton" + newColor).get(0).cloneNode().play();
+     $("#button" + newColor).addClass("activated");
+     setTimeout(function() {
+       $("#button" + newColor).removeClass("activated");
+     }, 250);
+     compCount++;
+     if (compCount == compStorage.length) {
+       clearInterval(turns);
+       $(".pads").css("pointer-events", "auto");
+     }
+   }
+   //winning progression
+   function win() {
+     $("#displayText").html("WIN");
+     $("#buttonGre").addClass("activated");
+     setTimeout(function() {
+       $("#buttonGre").removeClass("activated");
+     }, 250);
+     setTimeout(function() {
+       $("#buttonRed").addClass("activated");
+     }, 250);
+     setTimeout(function() {
+       $("#buttonRed").removeClass("activated");
+     }, 500);
+     setTimeout(function() {
+       $("#buttonYel").addClass("activated");
+     }, 500);
+     setTimeout(function() {
+       $("#buttonYel").removeClass("activated");
+     }, 750);
+     setTimeout(function() {
+       $("#buttonBlu").addClass("activated");
+     }, 750);
+     setTimeout(function() {
+       $("#buttonBlu").removeClass("activated");
+     }, 1000);
+     setTimeout(function() {
+       $("#buttonGre").addClass("activated");
+     }, 1250);
+     setTimeout(function() {
+       $("#buttonRed").addClass("activated");
+     }, 1250);
+     setTimeout(function() {
+       $("#buttonYel").addClass("activated");
+     }, 1250);
+     setTimeout(function() {
+       $("#buttonBlu").addClass("activated");
+     }, 1250);
+     setTimeout(function() {
+       $("#buttonGre").removeClass("activated");
+     }, 1500);
+     setTimeout(function() {
+       $("#buttonRed").removeClass("activated");
+     }, 1500);
+     setTimeout(function() {
+       $("#buttonYel").removeClass("activated");
+     }, 1500);
+     setTimeout(function() {
+       $("#buttonBlu").removeClass("activated");
+     }, 1500);
+     setTimeout(function() {
+       $("#buttonGre").addClass("activated");
+     }, 1750);
+     setTimeout(function() {
+       $("#buttonRed").addClass("activated");
+     }, 1750);
+     setTimeout(function() {
+       $("#buttonYel").addClass("activated");
+     }, 1750);
+     setTimeout(function() {
+       $("#buttonBlu").addClass("activated");
+     }, 1750);
+     setTimeout(function() {
+       $("#buttonGre").removeClass("activated");
+     }, 2000);
+     setTimeout(function() {
+       $("#buttonRed").removeClass("activated");
+     }, 2000);
+     setTimeout(function() {
+       $("#buttonYel").removeClass("activated");
+     }, 2000);
+     setTimeout(function() {
+       $("#buttonBlu").removeClass("activated");
+     }, 2000);
+
+   //new button id creation
+   function newButton(id, color) {
+     this.id = id;
+     this.color = color;
+   }
+   var gre = new newButton(1, "gre");
+   var red = new newButton(2, "red");
+   var yel = new newButton(3, "yel");
+   var blu = new newButton(4, "blu");
+
+     setTimeout(function() {
+       playerStorage = [];
+       compStorage = [];
+       compCount= 0;
+       playerCount = 0;
+       level = 1;
+       $("#displayText").html("0");
+       numOfMatches = true;
+       clearInterval(turns);
+       $("pads").css("pointer-events", "none");
+       compReset();
+       setTimeout(function() {
+         turns = setInterval(playerSteps, 1000);
+       }, 1000);
+     }, 3000);
+   }
+   </script>
+ </footer>
+</html>
+</body>

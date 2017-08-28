@@ -1,0 +1,183 @@
+/*Footer*/
+footer {
+  margin-top: 5rem;
+}
+i.fa.fa-github {
+  margin-left: 15px;
+  margin-top:5px;
+  font-size: 3.5em;
+  vertical-align: middle;
+}
+a.glyphicon.glyphicon-envelope {
+  margin-left: 10px;
+  margin-top:5px;
+  font-size: 2.5em;
+  top: 0.5em;
+}
+/* End Footer*/
+html body {
+  background-image: url(https://www.inart.co.il/wp-content/uploads/2014/08/office-table.jpg);
+  background-size: cover;
+}
+
+.pads {
+	position:absolute;
+	width:190px;
+	height:190px;
+  margin: 20px;
+  pointer-events: none;
+}
+.pads:active {
+  opacity: .5;
+}
+.activated {
+  opacity: .5;
+}
+#buttonGre {
+	top:0;
+	left:0;
+	background-color:#00b300;
+	border-radius:100% 0 0 0;
+}
+#buttonRed {
+	top:0;
+	right:0;
+	background-color:#e60000;
+	border-radius:0 100% 0 0 ;
+}
+#buttonYel {
+	bottom:0;
+	left:0;
+	background-color:#ffff1a;
+	border-radius:0 0 0 100%;
+}
+#buttonBlu {
+	bottom:0;
+	right:0;
+	background-color:#0000ff;
+	border-radius:0 0 100% 0 ;
+}
+.board {
+	position:relative;
+	width:440px;
+	height:440px;
+	margin:0 auto;
+  margin-top: 60px;
+  border: solid black;
+  border-radius: 50%;
+  background-color: black;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+#center {
+  position:absolute;
+  background-color:white;
+  border: 20px solid black;
+	width:200px;
+	height:200px;
+	top:120px;
+	left:120px;
+	border-radius:50%;
+}
+
+#textTitle {
+  height: 70px;
+  line-height: 90px;
+  width: 100%;
+  text-align: center;
+  font-size: 35px;
+  color: black;
+  font-family: "Alfa Slab One";
+}
+#countBox {
+  vertical-align: top;
+  display: inline-block;
+  height: 50px;
+  width: 50.3px;
+}
+#countDisplay {
+  border: solid 3px #444443;
+  border-radius: 20%;
+  height: 50%;
+  margin: 0px 6px 0px 6px;
+  background: #840512;
+  font-size: 20px;
+  line-height: 20px;
+  text-align: center;
+}
+#countText {
+  height: 30%;
+  margin: 4px 6px 0px 6px;
+  font-size: 10px;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  font-family: "Pragati Narrow";
+}
+#displayText {
+  color:#f4495a;
+  font-family: "Orbitron";
+}
+#startBox {
+  vertical-align: top;
+  display: inline-block;
+  height: 50px;
+  width: 50.4px;
+}
+#startButton {
+  border: solid 3px #444443;
+  border-radius: 50%;
+  height: 50%;
+  margin: 0px 12.7px 0px 12.7px;
+  background: red;
+  font-size: 20px;
+  line-height: 17px;
+  text-align: center;
+}
+#startText {
+  height: 30%;
+  margin: 4px 6px 0px 6px;
+  font-size: 10px;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  font-family: "Pragati Narrow";
+}
+#strictBox {
+  vertical-align: top;
+  display: inline-block;
+  height: 50px;
+  width: 50.4px;
+}
+#strictButton {
+  border: solid 3px #444443;
+  border-radius: 50%;
+  height: 50%;
+  width: 25px;
+  margin: 0px 12.5px 0px 12.5px;
+  background: yellow;
+  color: black;
+  font-size: 17px;
+  line-height: 20px;
+  text-align: center;
+}
+#strictText {
+  height: 30%;
+  margin: 4px 6px 0px 6px;
+  font-size: 10px;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  font-family: "Pragati Narrow";
+}
+#instr{
+  vertical-align: top;
+  display: inline-block;
+  height: 20px;
+  line-height: 25px;
+  width: 160px;
+  font-size: .9em;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  font-family: "Pragati Narrow";
+}
